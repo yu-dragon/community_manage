@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-    <router-link to="/">Home</router-link>&nbsp;&nbsp;&nbsp;
-    <router-link to="/about">About</router-link>
-    <router-view />
+    <!-- 路由占位符，所有匹配到的组件都会在这里显示-->
+    <router-view></router-view>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<script>
+export default {
+  name: 'app'
 }
+</script>
+
+<style>
+
 </style>
