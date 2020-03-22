@@ -21,74 +21,74 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      // 登录表单数据对象
-      loginForm: {
-        username: '',
-        password: ''
+  export default {
+    data() {
+      return {
+        // 登录表单数据对象
+        loginForm: {
+          username: '',
+          password: ''
+        },
+        rules: {
+          username: [{
+              required: true,
+              message: '请输入用户名',
+              trigger: 'blur'
+            },
+            {
+              min: 3,
+              max: 6,
+              message: '用户名长度为3-6个字符',
+              trigger: 'blur'
+            }
+          ],
+          password: [{
+              required: true,
+              message: '请输入密码',
+              trigger: 'blur'
+            },
+            {
+              min: 6,
+              max: 8,
+              message: '密码长度为6-8个字符',
+              trigger: 'blur'
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      resetForm() {
+        // console.log(this)
+        this.$refs.loginFormRef.resetFields()
       },
-      rules: {
-        username: [{
-          required: true,
-          message: '请输入用户名',
-          trigger: 'blur'
-        },
-        {
-          min: 3,
-          max: 6,
-          message: '密码长度为3-6个字符',
-          trigger: 'blur'
-        }
-        ],
-        password: [{
-          required: true,
-          message: '请输入密码',
-          trigger: 'blur'
-        },
-        {
-          min: 6,
-          max: 8,
-          message: '密码长度为6-8个字符',
-          trigger: 'blur'
-        }
-        ]
+      login() {
+        // 获取表单引用对象，获取验证结果
+        this.$refs.loginFormRef.validate(async valid => {
+          // console.log(valid)
+          if (!valid) return
+          const {
+            data: result
+          } = await this.$http.post('login', this.loginForm)
+          // console.log(result)
+          if (result.meta.status == 200) {
+            this.$message.success('登录成功！')
+            // console.log(result.data.token)
+            // 登录成功之后将token保存到客户端的sessionStorage中
+            window.sessionStorage.setItem('token', result.data.token)
+            // 编程式导航，跳转到主页面
+            this.$router.push('/home')
+          } else {
+            return this.$message.error('登录失败！')
+          }
+          /* this.$http.post('login', this.loginForm).then(result => {
+              console.log(result.data);
+              console.log(typeof result);
+            }) */
+        })
       }
     }
-  },
-  methods: {
-    resetForm () {
-      console.log(this)
-      this.$refs.loginFormRef.resetFields()
-    },
-    login () {
-      // 获取表单引用对象，获取验证结果
-      this.$refs.loginFormRef.validate(async valid => {
-        console.log(valid)
-        if (!valid) return
-        const {
-          data: result
-        } = await this.$http.post('login', this.loginForm)
-        console.log(result)
-        if (result.meta.status == 200) {
-          this.$message.success('登录成功！')
-          console.log(result.data.token)
-          // 登录成功之后将token保存到客户端的sessionStorage中
-          window.sessionStorage.setItem('token', result.data.token)
-          // 编程式导航，跳转到主页面
-          this.$router.push('/home')
-        } else {
-          return this.$message.error('登录失败！')
-        }
-        /* this.$http.post('login', this.loginForm).then(result => {
-            console.log(result.data);
-            console.log(typeof result);
-          }) */
-      })
-    }
   }
-}
 </script>
 
 <!-- scoped保证该样式在只在当前组件作用 -->

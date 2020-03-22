@@ -13,6 +13,15 @@ import './assets/css/global.css'
 import axios from 'axios'
 // 配置默认请求部分
 axios.defaults.baseURL = 'http://localhost:8090/'
+// 配置请求拦截器，请求是否在服务器端已经认证过，否则拒绝数据请求
+/* axios.interceptors.request.use(config => {
+  console.log(config)
+  // 测试时总是Authorization是不支持类型
+  config.headers.Authorization = window.sessionStorage.getItem('token');
+  console.log(config.headers.Authorization);
+  return config;
+}) */
+
 Vue.prototype.$http = axios
 
 // 项目入口文件
